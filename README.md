@@ -38,7 +38,7 @@ This repository accompanies our **NEJM AI** manuscript and offers a fully reprod
 ├── sample_data.csv          # 1 000 synthetic rows
 ├── requirements.txt         # scikit-learn 1.6 • pandas 2.2 • shap
 ├── docs/
-│   ├── pipeline_overview.png
+│   ├── pipeline_overview_.png
 │   ├── shap_beeswarm.png
 │   ├── decision_tree.png
 │   └── dss_screenshot.png

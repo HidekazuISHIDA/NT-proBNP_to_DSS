@@ -7,7 +7,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)&nbsp;
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.XXXXXXX-blue)](https://doi.org/10.5281/zenodo.XXXXXXX)&nbsp;
-![CI](https://github.com/<USERNAME>/heart-failure-dss/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/HidekazuISHIDA/NT-proBNP_to_DSS/actions/workflows/ci.yml/badge.svg)
 
 ---
 

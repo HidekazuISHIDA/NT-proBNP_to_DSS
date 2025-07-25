@@ -2,7 +2,7 @@
 *Interpretable NT-proBNP prediction from routine laboratory data*
 
 <p align="center">
-  <img src="docs/pipeline_overview.png" width="580" alt="Pipeline overview" />
+  <img src="docs/pipeline_overview.png" width="580" alt="Pipeline overview_" />
 </p>
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)&nbsp;

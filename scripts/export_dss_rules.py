@@ -1,4 +1,3 @@
-```python
 #!/usr/bin/env python3
 """
 Export a trained sklearn DecisionTreeClassifier to a flat rule table (JSON/CSV)

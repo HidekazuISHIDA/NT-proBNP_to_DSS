@@ -2,7 +2,7 @@
 *Interpretable NT‑proBNP screening from routine laboratory data*
 
 <p align="center">
-  <img src="docs/pipeline_overview.png" width="560" alt="Pipeline overview" />
+  <img src="docs/pipeline.png" width="560" alt="Pipeline overview" />
 </p>
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)&nbsp;

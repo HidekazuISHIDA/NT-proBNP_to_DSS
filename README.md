@@ -10,8 +10,8 @@
 ---
 
 ## 1. Overview
-This repository hosts code and artifacts for an interpretable decision‑tree model that predicts elevated NT‑proBNP (≥300 pg/mL) using only routine laboratory tests.  
-The model was trained on 19,889 encounters (Aug 2022–May 2024), evaluated on an internal hold‑out set (n = 3,978; AUROC 0.80, F1 70.3%), deployed in Abbott Japan’s Diagnostic Support System (DSS; Japan‑only middleware), and temporally validated on an independent cohort (n = 14,903; Jun 2024–Jun 2025; AUROC 0.81, F1 70.1%).
+This repository hosts code and artifacts for an interpretable decision-tree model that predicts elevated NT-proBNP (≥ 300 pg/mL) using only routine laboratory tests.
+The model was trained on 19,889 encounters (Aug 2022–May 2024), evaluated on an internal hold-out set (n = 3,978; AUROC 0.80, F1 70.3%), deployed in Abbott Japan’s Diagnostic Support System (DSS; Japan-only middleware), and temporally validated on an independent cohort (n = 14,903; Jun 2024–Jun 2025; AUROC 0.81, F1 70.1%).
 
 ---
 
@@ -83,20 +83,21 @@ python scripts/export_dss_rules.py \
   --model model/model.pkl \
   --output dss_rules.json
 ```
-Generates a machine‑readable rule file for DSS or other middleware.
+Generates a machine-readable rule file for DSS or other middleware (platform mapping may require local validation).
 
 ---
 
 ## 7. Data availability & privacy
 
-Clinical data (19,889 derivation encounters and 14,903 temporal validation encounters) were analyzed under IRB approval (Gifu University Ethics No. 2022‑086) and cannot be released publicly.
-A small synthetic dataset (data/sample_data.csv) with the same schema is provided so that all scripts run end‑to‑end. Additional de‑identified data may be available upon reasonable request and ethics approval.
+Clinical data (19,889 derivation encounters; 14,903 temporal validation encounters) were analyzed under IRB approval (Gifu University Ethics No. 2022-086) and cannot be released publicly.
+A small synthetic dataset (data/sample_data.csv) with the same schema is provided so that all scripts run end-to-end. Additional de-identified data may be available upon reasonable request and ethics approval.
 
 ---
 
-## 8. Code availability
+## 8. Code availability & reproducibility
 
-All custom code for preprocessing, model training, evaluation, and DSS rule export is included here under the MIT License. The manuscript version is tagged v1.0.0.
+All custom code for preprocessing, model training, evaluation, and DSS rule export is included here under the MIT License.
+The manuscripted version is tagged v1.0.0. To cite a specific revision, include the Git commit hash (e.g., git rev-parse --short HEAD).
 
 ---
 
@@ -116,11 +117,11 @@ All custom code for preprocessing, model training, evaluation, and DSS rule expo
 
 ## 10. DSS / CDS note
 
-DSS (Abbott Diagnostics, Tokyo, Japan) is marketed only in Japan and enables laboratory technologists to append rule‑based interpretive comments to EMRs. Abbott’s international Clinical Decision Support (CDS) platforms (e.g., AlinIQ CDS) target different regulatory workflows. The decision rules provided here are platform‑agnostic and can be ported after validation.
+DSS (Abbott Diagnostics, Tokyo, Japan) is marketed only in Japan and enables laboratory technologists to append rule-based interpretive comments to electronic medical records (EMRs). Abbott’s international Clinical Decision Support (CDS) platforms (e.g., AlinIQ CDS) target different regulatory workflows. The decision rules here are platform-agnostic and can be ported after validation.
 
 ---
 
-## 11. License & diclaimer
+## 11. License & disclaimer
 
 Released under the MIT License (see LICENSE).
 For research use only. Local validation and regulatory clearance are required before any clinical deployment.
@@ -133,6 +134,4 @@ For research use only. Local validation and regulatory clearance are required be
 
 * Author contributions: H.I. conceived the study and drafted the manuscript; N.O. and M.T. curated data and validated analyses; H.N. implemented software and integration; Y.S., T.W., and H.O. provided clinical oversight; R.K. supervised the project and finalized the manuscript. All authors approved the final version.
 
-```makefile
-::contentReference[oaicite:0]{index=0}
 

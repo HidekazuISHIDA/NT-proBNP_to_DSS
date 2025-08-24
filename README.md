@@ -43,7 +43,7 @@ NT-proBNP_to_DSS/
 ├── notebooks/
 │   └── Beeswarm_with_LassoCoef_SHAP.ipynb
 ├── docs/
-│   ├── pipeline_overview.png
+│   ├── pipeline.png
 │   ├── shap_beeswarm.png
 │   ├── decision_tree.png
 │   └── dss_screenshot.png
@@ -87,7 +87,7 @@ Generates a machine‑readable rule file for DSS or other middleware.
 
 ---
 
-## 7. Data avilability & privacy
+## 7. Data availability & privacy
 
 Clinical data (19,889 derivation encounters and 14,903 temporal validation encounters) were analyzed under IRB approval (Gifu University Ethics No. 2022‑086) and cannot be released publicly.
 A small synthetic dataset (data/sample_data.csv) with the same schema is provided so that all scripts run end‑to‑end. Additional de‑identified data may be available upon reasonable request and ethics approval.
@@ -104,10 +104,10 @@ All custom code for preprocessing, model training, evaluation, and DSS rule expo
 
 ```bibtex
 @article{Ishida2025_NTproBNP_DSS,
-  title   = {Development of an Interpretable Machine Learning Model for Early Screening of Heart Failure and Its Application to Diagnostic Support Systems},
+  title   = {Interpretable Laboratory-Data Model to Flag Elevated NT-proBNP and its Deployment in Diagnostic Support Middleware},
   author  = {Ishida, Hidekazu and Ohzawa, Noriko and Tachikawa, Masaya and Nagasawa, Hiroki and Shirakami, Yohei and Watanabe, Takatomo and Okura, Hiroyuki and Kikuchi, Ryosuke},
-  journal = {npj Digital Medicine},
-  year    = {2025},
+  journal = {***},
+  year    = {***},
   note    = {In review},
 }
 ```
@@ -127,7 +127,7 @@ For research use only. Local validation and regulatory clearance are required be
 
 ---
 
-## 12. Competing interest & contributions
+## 12. Competing interests & contributions
 
 * Competing interests: H.N. is the Representative Director and President of M2DS Co., Ltd. The other authors declare no competing interests.
 

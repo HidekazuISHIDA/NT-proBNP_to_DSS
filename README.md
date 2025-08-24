@@ -76,7 +76,7 @@ Outputs a CSV with prediction probabilities (pred_prob) and binary labels (pred_
 
 ---
 
-## 6. Export roles to DSS / CDS
+## 6. Export rules to DSS / CDS
 
 ```bash
 python scripts/export_dss_rules.py \

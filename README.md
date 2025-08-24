@@ -34,7 +34,7 @@ NT-proBNP_to_DSS/
 ├── LICENSE
 ├── data/
 │   └── sample_data.csv           # small synthetic example
-├── models/
+├── model/
 │   ├── model.pkl
 │   └── standard_scaler.pkl
 ├── scripts/
@@ -67,8 +67,8 @@ pip install -r requirements.txt   # tested on Python 3.9.5
 
 ```bash
 python scripts/predict.py \
-  --model models/model.pkl \
-  --scaler models/standard_scaler.pkl \
+  --model model/model.pkl \
+  --scaler model/standard_scaler.pkl \
   --input data/sample_data.csv \
   --output results/predictions.csv
 ```
@@ -80,7 +80,7 @@ Outputs a CSV with prediction probabilities (pred_prob) and binary labels (pred_
 
 ```bash
 python scripts/export_dss_rules.py \
-  --model models/model.pkl \
+  --model model/model.pkl \
   --output dss_rules.json
 ```
 Generates a machine‑readable rule file for DSS or other middleware.

@@ -103,12 +103,35 @@ Missing data: complete-case only; no imputation
 
 ## 7. Export rules to DSS / CDS
 
+Use the exporter to convert the trained decision tree into a DSS/CDS-friendly JSON rule file (fixed operating threshold defaults to **0.50**).
+
+**Basic**
 ```bash
 python scripts/export_dss_rules.py \
   --model model/model.pkl \
   --output dss_rules.json
 ```
-Generates a machine-readable rule file for DSS or other middleware (platform mapping and validation are site-specific).
+
+With explicit feature names and a custom comment
+
+```bash
+python scripts/export_dss_rules.py \
+  --model model/model.pkl \
+  --output dss_rules.json \
+  --threshold 0.50 \
+  --feature-names "Sex,Age,Na,K,Cl,TP,Alb,CK,AST,ALT,LD,Cre,UN,WBC,MCV,MCHC,RDWCV,PLT,eGFR" \
+  --comment-template "Predicted risk of NT-proBNP > 300 pg/mL is elevated based on routine laboratory parameters. Consider NT-proBNP testing and clinical evaluation for heart failure."
+```
+
+Outputs: dss_rules.json with the nested rule tree, leaf class counts/probabilities, and the fixed operating threshold.
+See docs/how_to_export_DSS_rules.md
+ for JSON schema, deployment notes, and governance checks.
+
+```kotlin
+
+If your README section numbers differ, keep the *same section title* and place this block under that title.
+::contentReference[oaicite:0]{index=0}
+```
 
 ---
 

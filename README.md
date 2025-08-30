@@ -1,17 +1,16 @@
-# NT‑proBNP_to_DSS  
-*Interpretable NT‑proBNP screening from routine laboratory data*
+# NT-proBNP_to_DSS  
+*Interpretable NT-proBNP screening from routine laboratory data*
 
 <p align="center">
   <img src="docs/pipeline.png" width="560" alt="Pipeline overview" />
 </p>
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)&nbsp;
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 ---
 
 ## 1. Overview
-This repository hosts code and artifacts for an interpretable decision-tree model that predicts elevated NT-proBNP (≥ 300 pg/mL) using only routine laboratory tests.
-The model was trained on 19,889 encounters (Aug 2022–May 2024), evaluated on an internal hold-out set (n = 3,978; AUROC 0.80, F1 70.3%), deployed in Abbott Japan’s Diagnostic Support System (DSS; Japan-only middleware), and temporally validated on an independent cohort (n = 14,903; Jun 2024–Jun 2025; AUROC 0.81, F1 70.1%).
+This repository hosts code and artifacts for an interpretable decision-tree model that predicts elevated N-terminal pro–B-type natriuretic peptide (NT-proBNP) **> 300 pg/mL** from routine laboratory tests. The model was trained on 19,889 encounters, evaluated on an internal hold-out set (n = 3,978), deployed in Abbott Japan’s Diagnostic Support System (DSS), and temporally validated (n = 14,903). All manuscript metrics use a **fixed operating threshold of 0.50** in DSS.
 
 ---
 
@@ -19,9 +18,9 @@ The model was trained on 19,889 encounters (Aug 2022–May 2024), evaluated on a
 
 |  |  |
 |---|---|
-| **Interpretable & validated** | Transparent decision tree; AUROC 0.80 / 0.81 and F1 ≈70% (internal / external) |
-| **Deployed in practice** | Running inside Abbott Japan’s **DSS**, issuing automated rule‑based comments in daily workflow |
-| **Scalable & low cost** | Uses routine labs only; rules are portable to Abbott’s international CDS platforms after platform‑specific validation |
+| **Interpretable & validated** | Transparent decision tree; AUROC ~0.80 (internal) / ~0.81 (external) |
+| **Deployed in practice** | Running inside Abbott Japan’s **DSS**, issuing automated rule-based interpretive comments in daily workflow |
+| **Scalable & low cost** | Uses routine labs only; rules are portable to Abbott’s international CDS platforms after platform-specific validation |
 
 ---
 
@@ -33,20 +32,22 @@ NT-proBNP_to_DSS/
 ├── requirements.txt
 ├── LICENSE
 ├── data/
-│   └── sample_data.csv           # small synthetic example
+│   └── sample_data.csv           # synthetic example (schema-compatible)
 ├── model/
 │   ├── model.pkl
 │   └── standard_scaler.pkl
 ├── scripts/
 │   ├── predict.py                # one-shot inference on CSV
-│   └── export_dss_rules.py       # tree → DSS/CDS rule table
+│   ├── export_dss_rules.py       # tree → DSS/CDS rule table
+│   └── make_table2.py            # reproduce Table 2 metrics (fixed thr=0.50)
 ├── notebooks/
 │   └── Beeswarm_with_LassoCoef_SHAP.ipynb
 ├── docs/
 │   ├── pipeline.png
 │   ├── shap_beeswarm.png
 │   ├── decision_tree.png
-│   └── dss_screenshot.png
+│   ├── dss_screenshot.png
+│   └── STARD_mapping.md
 └── results/                      # created after running scripts
 ```
 
@@ -58,7 +59,7 @@ NT-proBNP_to_DSS/
 git clone https://github.com/HidekazuISHIDA/NT-proBNP_to_DSS.git
 cd NT-proBNP_to_DSS
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt   # tested on Python 3.9.5
+pip install -r requirements.txt    # tested on Python 3.9.5
 ```
 
 ---
@@ -76,32 +77,62 @@ Outputs a CSV with prediction probabilities (pred_prob) and binary labels (pred_
 
 ---
 
-## 6. Export rules to DSS / CDS
+## 6. Evaluation (reproducing Table 2)
+
+All manuscript metrics use a fixed threshold = 0.50 in DSS.
+We report AUROC (DeLong 95% CI) and sensitivity, specificity, positive predictive value (PPV), negative predictive value (NPV), and accuracy (Wilson 95% CIs).
+
+```bash
+# Recreate Table 2 for Train / Test / External
+python scripts/make_table2.py \
+  --model model/model.pkl \
+  --scaler model/standard_scaler.pkl \
+  --train data/train.csv \
+  --test data/test.csv \
+  --external data/external.csv \
+  --out results/table2.csv
+```
+
+Outputs: results/table2.csv and a console printout mirroring Table 2.
+
+Index test: decision-tree probability with a fixed decision rule
+Reference standard: NT-proBNP > 300 pg/mL
+Missing data: complete-case only; no imputation
+
+---
+
+## 7. Export rules to DSS / CDS
 
 ```bash
 python scripts/export_dss_rules.py \
   --model model/model.pkl \
   --output dss_rules.json
 ```
-Generates a machine-readable rule file for DSS or other middleware (platform mapping may require local validation).
+Generates a machine-readable rule file for DSS or other middleware (platform mapping and validation are site-specific).
 
 ---
 
-## 7. Data availability & privacy
+## 8. Reporting & STARD
 
-Clinical data (19,889 derivation encounters; 14,903 temporal validation encounters) were analyzed under IRB approval (Gifu University Ethics No. 2022-086) and cannot be released publicly.
-A small synthetic dataset (data/sample_data.csv) with the same schema is provided so that all scripts run end-to-end. Additional de-identified data may be available upon reasonable request and ethics approval.
-
----
-
-## 8. Code availability & reproducibility
-
-All custom code for preprocessing, model training, evaluation, and DSS rule export is included here under the MIT License.
-The manuscripted version is tagged v1.0.0. To cite a specific revision, include the Git commit hash (e.g., git rev-parse --short HEAD).
+A detailed item-by-item mapping to STARD 2015 is provided in
+docs/STARD_mapping.md
 
 ---
 
-## 9. Citation
+## 9. Data availability & privacy
+
+De-identified clinical data are not publicly available owing to institutional policy and ethics approval constraints (Gifu University Ethics No. 2022-086). Requests for access to a limited, de-identified analytic dataset for verification will be considered by the Ethics Committee and the corresponding author, subject to a data-use agreement. A synthetic dataset with identical schema is provided so that all scripts run end-to-end. Aggregate outputs (e.g., summary tables underlying Table 2) and model artifacts (final decision tree / DSS rule file) are included in this repository.
+
+---
+
+## 10. Code availability & reproducibility
+
+All custom code for preprocessing, LASSO feature selection, decision-tree training/evaluation, temporal external validation, and DSS rule export is released under the MIT License.
+The manuscript version is tagged v1.0.0 (include the Git commit hash when citing a specific revision). Environment details are pinned in requirements.txt.
+
+---
+
+## 11. Citation
 
 ```bibtex
 @article{Ishida2025_NTproBNP_DSS,
@@ -115,23 +146,27 @@ The manuscripted version is tagged v1.0.0. To cite a specific revision, include 
 
 ---
 
-## 10. DSS / CDS note
+## 12. DSS / CDS note
 
-DSS (Abbott Diagnostics, Tokyo, Japan) is marketed only in Japan and enables laboratory technologists to append rule-based interpretive comments to electronic medical records (EMRs). Abbott’s international Clinical Decision Support (CDS) platforms (e.g., AlinIQ CDS) target different regulatory workflows. The decision rules here are platform-agnostic and can be ported after validation.
+DSS (Abbott Diagnostics, Tokyo, Japan) is marketed exclusively in Japan and enables laboratory technologists to append rule-based interpretive comments to the electronic laboratory report/EHR. Abbott’s international clinical decision support (CDS) platforms target different regulatory workflows. The decision rules here are platform-agnostic and can be ported after platform-specific validation.
 
 ---
 
-## 11. License & disclaimer
+## 13. License & disclaimer
 
 Released under the MIT License (see LICENSE).
 For research use only. Local validation and regulatory clearance are required before any clinical deployment.
 
 ---
 
-## 12. Competing interests & contributions
+## 14. Competing interests & contributions
 
-* Competing interests: H.N. is the Representative Director and President of M2DS Co., Ltd. The other authors declare no competing interests.
+Competing interests. H.N. is the Representative Director and President of M2DS Co., Ltd. The other authors declare no competing interests.
+Author contributions. H.I. conceived the study and drafted the manuscript; N.O. and M.T. curated data and validated analyses; H.N. implemented software and integration; Y.S., T.W., and H.O. provided clinical oversight; R.K. supervised the project and finalized the manuscript. All authors approved the final version.
 
-* Author contributions: H.I. conceived the study and drafted the manuscript; N.O. and M.T. curated data and validated analyses; H.N. implemented software and integration; Y.S., T.W., and H.O. provided clinical oversight; R.K. supervised the project and finalized the manuscript. All authors approved the final version.
+```pgsql
+If you want, I can also draft `scripts/make_table2.py` that implements DeLong + Wilson CIs at the fixed 0.50 operating point so the Evaluation section runs out-of-the-box.
+::contentReference[oaicite:0]{index=0}
+```
 
 

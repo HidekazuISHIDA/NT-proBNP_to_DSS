@@ -69,7 +69,7 @@ pip install -r requirements.txt    # tested on Python 3.9.5
 
 ## 5. Quick start (prediction)
 
-The prediction script automatically applies the sensitivity-optimized threshold determined during training. Note that 'StandardScaler' is no longer used, as the decision tree operates on raw values for better interpretability.
+The prediction script automatically applies the sensitivity-optimized threshold determined during training. Note that `StandardScaler` is no longer used, as the decision tree operates on raw values for better interpretability.
 
 ```bash
 python scripts/predict.py \
@@ -78,7 +78,7 @@ python scripts/predict.py \
   --input data/sample_data.csv \
   --output results/predictions.csv
 ```
-Outputs a CSV with prediction probabilities (pred_prob) and binary labels (pred_label).
+Outputs a CSV with prediction probabilities (`pred_prob`) and binary labels (`pred_label`).
 
 ---
 
@@ -97,11 +97,11 @@ python scripts/make_table2.py \
   --out results/table2.csv
 ```
 
-Outputs: results/table2.csv and a console printout mirroring Table 2.
+Outputs: `results/table2.csv` and a console printout mirroring Table 2.
 
-Index test: decision-tree probability with a fixed decision rule
-Reference standard: NT-proBNP > 300 pg/mL
-Missing data: complete-case only; no imputation
+- Index test: decision-tree probability with a fixed decision rule
+- Reference standard: NT-proBNP > 300 pg/mL
+- Missing data: complete-case only; no imputation
 
 ---
 

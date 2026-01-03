@@ -69,7 +69,7 @@ pip install -r requirements.txt    # tested on Python 3.9.5
 
 ## 5. Quick start (prediction)
 
-The prediction script automatically applies the sensitivity-optimized threshold determined during training. Note that **StandardScaler** is no longer used, as the decision tree operates on raw values for better interpretability.
+The prediction script automatically applies the sensitivity-optimized threshold determined during training. Note that 'StandardScaler' is no longer used, as the decision tree operates on raw values for better interpretability.
 
 ```bash
 python scripts/predict.py \

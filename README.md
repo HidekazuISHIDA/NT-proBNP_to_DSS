@@ -156,19 +156,19 @@ All custom code for preprocessing, decision-tree training/evaluation, temporal e
 
 ---
 
-## 12. DSS / CDS note
+## 11. DSS / CDS note
 
 DSS (Abbott Diagnostics, Tokyo, Japan) is marketed exclusively in Japan and enables laboratory technologists to append rule-based interpretive comments to the electronic laboratory report/EHR. Abbott’s international clinical decision support (CDS) platforms target different regulatory workflows. The decision rules here are platform-agnostic and can be ported after platform-specific validation.
 
 ---
 
-## 13. License & disclaimer
+## 12. License & disclaimer
 
 Released under the MIT License (see LICENSE). For research use only. Local validation and regulatory clearance are required before any clinical deployment.
 
 ---
 
-## 14. Competing interests & contributions
+## 13. Competing interests & contributions
 
 **Competing interests:** H.N. is the Representative Director and President of M2DS Co., Ltd. The other authors declare no competing interests.
 

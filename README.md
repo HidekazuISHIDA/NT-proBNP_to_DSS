@@ -1,5 +1,5 @@
-# NT-proBNP_to_DSS  
-*Interpretable NT-proBNP screening from routine laboratory data*
+# NT-proBNP_to_DSS
+*Interpretable laboratory-data model for risk stratification of elevated NT-proBNP*
 
 <p align="center">
   <img src="docs/pipeline.png" width="560" alt="Pipeline overview" />
@@ -10,7 +10,9 @@
 ---
 
 ## 1. Overview
-This repository hosts code and artifacts for an interpretable decision-tree model that predicts elevated N-terminal pro–B-type natriuretic peptide (NT-proBNP) **> 300 pg/mL** from routine laboratory tests. The model was trained on 19,889 encounters, evaluated on an internal hold-out set (n = 3,978), deployed in Abbott Japan’s Diagnostic Support System (DSS), and temporally validated (n = 14,903). All manuscript metrics use a **fixed operating threshold of 0.50** in DSS.
+This repository hosts code and artifacts for an interpretable decision-tree model that **stratifies the risk of** elevated N-terminal pro–B-type natriuretic peptide (NT-proBNP) **> 300 pg/mL** using only routine laboratory tests.
+
+The model was developed to function as a **triage tool** for identifying high-risk patients. It was trained on 19,889 encounters using **all 20 candidate predictors (without LASSO selection)** to capture non-linear associations. The decision threshold was optimized to maintain **high sensitivity (≥0.90)** in the training set. The model was deployed in Abbott Japan’s Diagnostic Support System (DSS) and validated on a temporal external cohort (n = 14,903), demonstrating high sensitivity (**0.882**) and negative predictive value (**0.852**).
 
 ---
 
@@ -18,9 +20,10 @@ This repository hosts code and artifacts for an interpretable decision-tree mode
 
 |  |  |
 |---|---|
-| **Interpretable & validated** | Transparent decision tree; AUROC ~0.80 (internal) / ~0.81 (external) |
-| **Deployed in practice** | Running inside Abbott Japan’s **DSS**, issuing automated rule-based interpretive comments in daily workflow |
-| **Scalable & low cost** | Uses routine labs only; rules are portable to Abbott’s international CDS platforms after platform-specific validation |
+| **High Sensitivity for Triage** | Optimized threshold ensures high sensitivity (~0.88) and NPV (~0.85) to effectively "rule out" low-risk patients. |
+| **Interpretable Logic** | Transparent decision tree using raw laboratory values (e.g., Alb, eGFR, Age) without "black-box" transformations. |
+| **Deployed in Practice** | Running inside Abbott Japan’s **DSS**, issuing automated rule-based interpretive comments in daily workflow. |
+| **Scalable & Low Cost** | Uses routine labs only; rules are portable to Abbott’s international CDS platforms after platform-specific validation. |
 
 ---
 
@@ -34,21 +37,19 @@ NT-proBNP_to_DSS/
 ├── data/
 │   └── sample_data.csv           # synthetic example (schema-compatible)
 ├── model/
-│   ├── model.pkl
-│   └── standard_scaler.pkl
+│   └── model.pkl                 # Trained DecisionTreeClassifier (scikit-learn)
 ├── scripts/
-│   ├── predict.py                # one-shot inference on CSV
-│   ├── export_dss_rules.py       # tree → DSS/CDS rule table
-│   └── make_table2.py            # reproduce Table 2 metrics (fixed thr=0.50)
+│   ├── predict.py                # Inference script (calculates optimal threshold)
+│   ├── export_dss_rules.py       # Export tree to DSS/CDS JSON rule format
+│   └── make_table2.py            # Reproduce Table 2 metrics
 ├── notebooks/
-│   └── Beeswarm_with_LassoCoef_SHAP.ipynb
+│   └── Tree_SHAP_Analysis.ipynb  # SHAP analysis with TreeExplainer
 ├── docs/
 │   ├── pipeline.png
 │   ├── shap_beeswarm.png
 │   ├── decision_tree.png
-│   ├── dss_screenshot.png
-│   └── STARD_mapping.md
-└── results/                      # created after running scripts
+│   └── dss_screenshot.png
+└── results/                      # Outputs (predictions, tables)
 ```
 
 ---
@@ -56,15 +57,19 @@ NT-proBNP_to_DSS/
 ## 4. Installation
 
 ```bash
-git clone https://github.com/HidekazuISHIDA/NT-proBNP_to_DSS.git
+git clone [https://github.com/HidekazuISHIDA/NT-proBNP_to_DSS.git](https://github.com/HidekazuISHIDA/NT-proBNP_to_DSS.git)
 cd NT-proBNP_to_DSS
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# Mac/Linux: source .venv/bin/activate
 pip install -r requirements.txt    # tested on Python 3.9.5
 ```
 
 ---
 
 ## 5. Quick start (prediction)
+
+The prediction script automatically applies the sensitivity-optimized threshold determined during training. Note that **StandardScaler** is no longer used, as the decision tree operates on raw values for better interpretability.
 
 ```bash
 python scripts/predict.py \
@@ -79,8 +84,7 @@ Outputs a CSV with prediction probabilities (pred_prob) and binary labels (pred_
 
 ## 6. Evaluation (reproducing Table 2)
 
-All manuscript metrics use a fixed threshold = 0.50 in DSS.
-We report AUROC (DeLong 95% CI) and sensitivity, specificity, positive predictive value (PPV), negative predictive value (NPV), and accuracy (Wilson 95% CIs).
+This script reproduces the performance metrics reported in the manuscript (Table 2), including AUROC, Sensitivity, Specificity, PPV, and NPV.
 
 ```bash
 # Recreate Table 2 for Train / Test / External

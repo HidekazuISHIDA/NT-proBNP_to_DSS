@@ -99,71 +99,54 @@ python scripts/make_table2.py \
 
 Outputs: `results/table2.csv` and a console printout mirroring Table 2.
 
-- Index test: decision-tree probability with a fixed decision rule
-- Reference standard: NT-proBNP > 300 pg/mL
-- Missing data: complete-case only; no imputation
+- Index test: Decision-tree probability with a fixed decision rule (optimized for sensitivity).
+- Reference standard: NT-proBNP > 300 pg/mL.
+- Missing data: Complete-case only; no imputation.
 
 ---
 
 ## 7. Export rules to DSS / CDS
 
-Use the exporter to convert the trained decision tree into a DSS/CDS-friendly JSON rule file (fixed operating threshold defaults to **0.50**).
+Use the exporter to convert the trained decision tree into a DSS/CDS-friendly JSON rule file. The threshold argument should be set to the optimized value derived from training.
 
-**Basic**
+### Basic export**
 ```bash
 python scripts/export_dss_rules.py \
   --model model/model.pkl \
   --output dss_rules.json
 ```
 
-With explicit feature names and a custom comment
-
+### Export with explicit feature names and interpretive comment**
 ```bash
 python scripts/export_dss_rules.py \
   --model model/model.pkl \
   --output dss_rules.json \
-  --threshold 0.50 \
-  --feature-names "Sex,Age,Na,K,Cl,TP,Alb,CK,AST,ALT,LD,Cre,UN,WBC,MCV,MCHC,RDWCV,PLT,eGFR" \
+  --threshold <OPTIMIZED_THRESHOLD> \
+  --feature-names "Sex,Age,Na,K,Cl,TP,Alb,CK,AST,ALT,LD,Cre,UN,WBC,RBC,Hb,Hct,MCV,MCH,MCHC,RDWCV,PLT,eGFR" \
   --comment-template "Predicted risk of NT-proBNP > 300 pg/mL is elevated based on routine laboratory parameters. Consider NT-proBNP testing and clinical evaluation for heart failure."
 ```
-
-Outputs: dss_rules.json with the nested rule tree, leaf class counts/probabilities, and the fixed operating threshold.
-See docs/how_to_export_DSS_rules.md
- for JSON schema, deployment notes, and governance checks.
-
-```kotlin
-
-If your README section numbers differ, keep the *same section title* and place this block under that title.
-::contentReference[oaicite:0]{index=0}
-```
+Outputs: `dss_rules.json` containing the nested rule tree and leaf node logic.
 
 ---
 
-## 8. Reporting & STARD
+## 8. Data availability & privacy
 
-A detailed item-by-item mapping to STARD 2015 is provided in
-docs/STARD_mapping.md
+De-identified clinical data are not publicly available owing to institutional policy and ethics approval constraints (Gifu University Ethics No. 2022-086). Requests for access to a limited, de-identified analytic dataset for verification will be considered by the Ethics Committee and the corresponding author, subject to a data-use agreement. A synthetic dataset with identical schema is provided so that all scripts run end-to-end. Aggregate outputs and model artifacts are included in this repository.
 
 ---
 
 ## 9. Data availability & privacy
 
-De-identified clinical data are not publicly available owing to institutional policy and ethics approval constraints (Gifu University Ethics No. 2022-086). Requests for access to a limited, de-identified analytic dataset for verification will be considered by the Ethics Committee and the corresponding author, subject to a data-use agreement. A synthetic dataset with identical schema is provided so that all scripts run end-to-end. Aggregate outputs (e.g., summary tables underlying Table 2) and model artifacts (final decision tree / DSS rule file) are included in this repository.
+9. Code availability & reproducibility
+All custom code for preprocessing, decision-tree training/evaluation, temporal external validation, and DSS rule export is released under the MIT License. The manuscript version is tagged `v2.0.0` (Major revision: removal of LASSO, inclusion of all predictors, sensitivity optimization).
 
 ---
 
-## 10. Code availability & reproducibility
-
-All custom code for preprocessing, LASSO feature selection, decision-tree training/evaluation, temporal external validation, and DSS rule export is released under the MIT License.
-The manuscript version is tagged v1.0.0 (include the Git commit hash when citing a specific revision). Environment details are pinned in requirements.txt.
-
----
-
-## 11. Citation
+## 10. Citation
 
 ```bibtex
 @article{Ishida2025_NTproBNP_DSS,
-  title   = {Interpretable Laboratory-Data Model to Flag Elevated NT-proBNP and its Deployment in Diagnostic Support Middleware},
+  title   = {Interpretable Laboratory-Data Model for Risk Stratification of Elevated NT-proBNP and its Deployment in Diagnostic Support Middleware},
   author  = {Ishida, Hidekazu and Ohzawa, Noriko and Tachikawa, Masaya and Nagasawa, Hiroki and Shirakami, Yohei and Watanabe, Takatomo and Okura, Hiroyuki and Kikuchi, Ryosuke},
   journal = {***},
   year    = {***},
@@ -181,19 +164,12 @@ DSS (Abbott Diagnostics, Tokyo, Japan) is marketed exclusively in Japan and enab
 
 ## 13. License & disclaimer
 
-Released under the MIT License (see LICENSE).
-For research use only. Local validation and regulatory clearance are required before any clinical deployment.
+Released under the MIT License (see LICENSE). For research use only. Local validation and regulatory clearance are required before any clinical deployment.
 
 ---
 
 ## 14. Competing interests & contributions
 
-Competing interests. H.N. is the Representative Director and President of M2DS Co., Ltd. The other authors declare no competing interests.
-Author contributions. H.I. conceived the study and drafted the manuscript; N.O. and M.T. curated data and validated analyses; H.N. implemented software and integration; Y.S., T.W., and H.O. provided clinical oversight; R.K. supervised the project and finalized the manuscript. All authors approved the final version.
+**Competing interests:** H.N. is the Representative Director and President of M2DS Co., Ltd. The other authors declare no competing interests.
 
-```pgsql
-If you want, I can also draft `scripts/make_table2.py` that implements DeLong + Wilson CIs at the fixed 0.50 operating point so the Evaluation section runs out-of-the-box.
-::contentReference[oaicite:0]{index=0}
-```
-
-
+**Author contributions:** H.I. conceived the study and drafted the manuscript; N.O. and M.T. curated data and validated analyses; H.N. implemented software and integration; Y.S., T.W., and H.O. provided clinical oversight; R.K. supervised the project and finalized the manuscript. All authors approved the final version.

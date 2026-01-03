@@ -1,0 +1,33 @@
+# Single source of truth for training + DSS export
+
+data:
+  internal_csv: "data/internal.csv"
+  external_csv: "data/external.csv"
+  target_column: "NTproBNP"
+  target_rule:
+    # Binary target = 1 if NT-proBNP > 300 pg/mL
+    kind: "threshold"
+    threshold: 300.0
+    positive_if: ">"
+  # Recommended: explicitly list predictors to ensure stable DSS behavior.
+  # If empty/null, predictors are inferred as "all columns except target".
+  predictor_columns: null
+
+training:
+  random_seed: 42
+  test_size: 0.20     # internal split for threshold selection / basic evaluation
+  stratify: true
+
+decision_tree:
+  # Keep interpretability; manuscript used depth=7 for full rules
+  max_depth: 7
+  min_samples_leaf: 50
+  class_weight: "balanced"   # set null to disable
+
+thresholding:
+  # Choose a probability threshold to reach sensitivity >= this value in internal TRAIN set
+  min_training_sensitivity: 0.90
+
+outputs:
+  model_dir: "model"
+  docs_fig_dir: "docs/figures"

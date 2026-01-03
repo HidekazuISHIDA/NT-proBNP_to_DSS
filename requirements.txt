@@ -1,15 +1,5 @@
-# Core
-numpy==1.26.4
-pandas==2.2.2
 scikit-learn==1.6.0
-scipy==1.11.4
-joblib==1.4.2
-
-# Plots / explainability (used in notebooks)
+shap==0.47.2
+pandas==2.2.2
+numpy==1.26.4
 matplotlib==3.8.4
-seaborn==0.13.2
-shap==0.45.0
-
-# Notebooks / utils
-nbformat==5.10.4
-jupyterlab==4.2.0
